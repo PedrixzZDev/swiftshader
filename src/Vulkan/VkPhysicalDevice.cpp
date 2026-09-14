@@ -146,7 +146,7 @@ static void getPhysicalDeviceProtectedMemoryFeatures(T *features)
 template<typename T>
 static void getPhysicalDeviceShaderDrawParameterFeatures(T *features)
 {
-	features->shaderDrawParameters = VK_FALSE;
+	features->shaderDrawParameters = VK_TRUE;
 }
 
 template<typename T>
@@ -194,7 +194,14 @@ static void getPhysicalDeviceImageRobustnessFeatures(T *features)
 template<typename T>
 static void getPhysicalDeviceShaderDrawParametersFeatures(T *features)
 {
-	features->shaderDrawParameters = VK_FALSE;
+	features->shaderDrawParameters = VK_TRUE;
+}
+
+template<typename T>
+static void getPhysicalDeviceVertexAttributeDivisorFeaturesEXT(T *features)
+{
+	features->vertexAttributeInstanceRateDivisor = VK_TRUE;
+	features->vertexAttributeInstanceRateZeroDivisor = VK_FALSE;
 }
 
 template<typename T>
@@ -560,6 +567,9 @@ void PhysicalDevice::getFeatures2(VkPhysicalDeviceFeatures2 *features) const
 			break;
 		case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_DRAW_PARAMETERS_FEATURES:
 			getPhysicalDeviceShaderDrawParameterFeatures(reinterpret_cast<VkPhysicalDeviceShaderDrawParameterFeatures *>(curExtension));
+			break;
+		case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_ATTRIBUTE_DIVISOR_FEATURES_EXT:
+			getPhysicalDeviceVertexAttributeDivisorFeaturesEXT(reinterpret_cast<VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT *>(curExtension));
 			break;
 		case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_HOST_QUERY_RESET_FEATURES:
 			getPhysicalDeviceHostQueryResetFeatures(reinterpret_cast<VkPhysicalDeviceHostQueryResetFeatures *>(curExtension));

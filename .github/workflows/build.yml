@@ -1,0 +1,33 @@
+name: Build SwiftShader
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Vulkan ICD
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: >-
+          cmake -S . -B build
+          -DCMAKE_BUILD_TYPE=Release
+          -DSWIFTSHADER_BUILD_TESTS=OFF
+
+      - name: Build
+        run: cmake --build build --target vk_swiftshader --parallel
+
+      - name: Upload Vulkan ICD
+        uses: actions/upload-artifact@v4
+        with:
+          name: vk-swiftshader-linux
+          path: |
+            build/Linux/libvk_swiftshader.so
+            build/Linux/vk_swiftshader_icd.json
+          if-no-files-found: error
